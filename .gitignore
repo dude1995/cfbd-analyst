@@ -1,0 +1,10 @@
+# Never commit API keys or downloaded data
+.cfbd_key
+*.cfbd_key
+cfbd_data/
+CFBD/
+__pycache__/
+*.pyc
+.DS_Store
+# Release ZIPs are built by the GitHub Action and attached to Releases
+*.zip
