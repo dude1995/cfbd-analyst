@@ -1,8 +1,11 @@
-First release of **CFBD Analyst**, a Claude skill for exploring college football data from CollegeFootballData.com with your own free API key.
+**CFBD Analyst**: ask Claude anything about college football, using data from CollegeFootballData.com and your own free API key.
 
-**Install:** download `cfbd-analyst.zip` below (don't unzip it). In Claude, go to **Customize > Skills > + > Create skill > Upload a skill**. Then follow the [setup guide](https://github.com/dude1995/cfbd-analyst#setup-about-10-minutes-once) to get your key and allow `api.collegefootballdata.com`.
+**New in this version:** your API key now lives in the **CFBD Data** desktop extension. You enter it once, it's stored in your computer's secure storage, and Claude never sees it. You also no longer need to change Claude's network settings.
 
-What's included:
-- Ask any question. Claude picks the CFBD endpoints, pulls the data, and analyzes it
-- Data and key stay in a folder on your computer and are reused across chats, so you spend fewer API calls
-- Favorite-team personalization: dashboards in your team's colors and logo, with your team highlighted
+**Install (Claude Desktop):**
+1. Get a free key at https://collegefootballdata.com/key
+2. Download **`cfbd-data.mcpb`** below, double-click it, click Install, and paste your key when asked.
+3. Download **`cfbd-analyst.zip`** below (don't unzip it). In Claude, go to **Customize > Skills > + > Create skill > Upload a skill**.
+4. Connect your `Documents/CFBD` folder to your chats, start a new chat, and say "Check my CFBD setup."
+
+Full guide: https://github.com/dude1995/cfbd-analyst#setup-about-10-minutes-once

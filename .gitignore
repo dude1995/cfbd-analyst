@@ -8,3 +8,8 @@ __pycache__/
 .DS_Store
 # Release ZIPs are built by the GitHub Action and attached to Releases
 *.zip
+# Extension build output (built by the GitHub Action)
+extension/node_modules/
+extension/server/
+dist/
+*.mcpb

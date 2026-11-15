@@ -1,6 +1,6 @@
 # Personalized team theming
 
-The user's favorite team is saved in `<data-dir>/profile.json` by `cfbd.py team set "<name>"`. The colors come from CFBD's own team data (`color`, `alternateColor`). The script then adjusts them so text and chart marks stay readable.
+The user's favorite team is saved in `<data-dir>/profile.json` by the extension's `cfbd_team` tool (or `cfbd.py team set` in fallback mode). The colors come from CFBD's own team data (`color`, `alternateColor`), adjusted so text and chart marks stay readable.
 
 ## Fields to use
 

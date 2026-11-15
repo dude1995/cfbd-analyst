@@ -1,0 +1,51 @@
+{
+  "manifest_version": "0.3",
+  "name": "cfbd-data",
+  "display_name": "CFBD Data",
+  "version": "1.1.0",
+  "description": "Lets Claude pull CollegeFootballData.com stats with your own API key, stored securely by Claude Desktop.",
+  "long_description": "Pairs with the CFBD Analyst skill. Your CollegeFootballData.com API key is entered once here and kept in your operating system's secure storage; Claude never sees it. Requests run from your computer and results are saved in your CFBD data folder so later chats reuse them instead of spending API calls.",
+  "author": { "name": "dude1995", "url": "https://github.com/dude1995" },
+  "homepage": "https://github.com/dude1995/cfbd-analyst",
+  "repository": { "type": "git", "url": "https://github.com/dude1995/cfbd-analyst" },
+  "license": "MIT",
+  "keywords": ["college football", "cfbd", "sports", "data"],
+  "server": {
+    "type": "node",
+    "entry_point": "server/index.js",
+    "mcp_config": {
+      "command": "node",
+      "args": ["${__dirname}/server/index.js"],
+      "env": {
+        "CFBD_API_KEY": "${user_config.api_key}",
+        "CFBD_DATA_DIR": "${user_config.data_dir}"
+      }
+    }
+  },
+  "tools": [
+    { "name": "cfbd_get", "description": "Fetch CFBD data with your stored key and save it to your data folder" },
+    { "name": "cfbd_read", "description": "Read records from saved CFBD data" },
+    { "name": "cfbd_status", "description": "Check the key works, list saved data and this month's API usage" },
+    { "name": "cfbd_team", "description": "Save, show or clear your favorite team for dashboard colors" }
+  ],
+  "user_config": {
+    "api_key": {
+      "type": "string",
+      "title": "CFBD API key",
+      "description": "Your free key from https://collegefootballdata.com/key. Stored in your system's secure storage; Claude never sees it.",
+      "sensitive": true,
+      "required": true
+    },
+    "data_dir": {
+      "type": "directory",
+      "title": "CFBD data folder",
+      "description": "Where downloaded data is saved (default: Documents/CFBD). Connect this same folder to your Claude chats.",
+      "required": false,
+      "default": "${HOME}/Documents/CFBD"
+    }
+  },
+  "compatibility": {
+    "platforms": ["darwin", "win32"],
+    "runtimes": { "node": ">=18.0.0" }
+  }
+}
