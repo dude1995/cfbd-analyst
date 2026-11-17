@@ -10,7 +10,8 @@ You help the user answer **any** college football question they ask with data fr
 Files in this skill:
 - `references/endpoints.md`: an endpoint map plus tips for saving calls. Read it before planning calls.
 - `references/theming.md`: how to apply the user's favorite-team colors and logo to dashboards. Read it before building any dashboard or styled chart.
-- `scripts/cfbd.py`: the fallback client, only for when the extension can't be used (see section 5).
+- `scripts/parse_passes.py`: turns saved `/plays` files into one row per pass with air yards, yards after catch (YAC), receiver and depth. See section 5.
+- `scripts/cfbd.py`: the fallback client, only for when the extension can't be used (see section 6).
 
 ## 1. How data access works
 
@@ -26,7 +27,7 @@ Requests run from the user's computer, so Claude's sandbox network settings don'
 
 ## 2. First use in a chat (quick)
 
-1. Look for the `cfbd_*` tools. **If they're missing**, tell the user to install the extension: download `cfbd-data.mcpb` from https://github.com/dude1995/cfbd-analyst/releases/latest, double-click it, click Install, and paste their key when Claude Desktop asks. Then start a new chat. Only if they can't use Claude Desktop, go to section 5.
+1. Look for the `cfbd_*` tools. **If they're missing**, tell the user to install the extension: download `cfbd-data.mcpb` from https://github.com/dude1995/cfbd-analyst/releases/latest, double-click it, click Install, and paste their key when Claude Desktop asks. Then start a new chat. Only if they can't use Claude Desktop, go to section 6.
 2. Run `cfbd_status`. If it reports `NOT SET` or a 401, have the user (re)enter the key in **Settings > Extensions > CFBD Data**. Don't take the key in chat.
 3. **Data folder.** For real analysis, work on the saved files directly. If the user's CFBD data folder (the one `cfbd_status` reports) is connected to this chat, read files from it (`raw/...json`, `raw/...csv`) with your normal file tools. If it isn't connected, suggest connecting it once ("connect your Documents/CFBD folder so I can work with the full data"). Until then, use `cfbd_read` in pages.
 4. **Favorite team.** `cfbd_status` shows whether one is saved. If none is saved and the user hasn't mentioned a team, ask once, briefly: "Got a favorite team? I'll use its colors and logo on your dashboards." Save it with `cfbd_team set <name>`. It accepts school names, abbreviations, or mascots. On `AMBIGUOUS`, show the user the choices and call again with the exact school name. If the user says "switch my team to X", call `set` again. If they say "forget my team", call `clear`.
@@ -48,7 +49,21 @@ Requests run from the user's computer, so Claude's sandbox network settings don'
 - For a one-off chart, draw it inline or save a PNG.
 - If the user shares charts publicly, suggest crediting "Data: CollegeFootballData.com".
 
-## 5. Fallback: no desktop extension (Claude on the web only)
+## 5. Passing detail: air yards, YAC, targets and depth
+
+CFBD has no air-yards or YAC fields, but many play descriptions say where the ball was caught ("caught at A&M49"). `scripts/parse_passes.py` reads those descriptions. Use it for questions about air yards, yards after catch, depth of target (aDOT), deep shots, completion rate by depth, throws by direction, or targets and catches by receiver.
+
+1. **Fetch the plays.** Get the team's schedule with `/games` (year, team, `seasonType: both`) to list the weeks played, then call `/plays` once per game week with `year`, `week`, `seasonType` and `offense: <team>`. That's one call per game (about 13 per season), so count the calls and follow the 25-call rule in section 3.
+2. **Run the parser** where the saved files are reachable: on the user's computer through a shell on the connected data folder if you have one, or in your own workspace after copying the `plays__*.json` files there. Never re-type play data by hand.
+   `python3 scripts/parse_passes.py --team "Texas A&M" --out <data folder>/derived/<team>_passes_<years>.csv <data folder>/raw`
+   Spell `--team` exactly as CFBD does. Passing a folder reads every saved `plays__*.json` in it and keeps only plays where that team is on offense, so other teams' saved files don't get mixed in.
+3. **Read the summary it prints, and tell the user what it means:**
+   - **Coverage.** Only some games have catch spots. CFBD's older, short descriptions ("Marcel Reed pass complete to KC Concepcion for 15 yds") give the passer, receiver, result and yards but no spot. In those games `air_yards` and `yac` are blank. The summary names the first charted game; for example, Texas A&M's start in 2025 Week 11. Compare seasons on air yards and YAC only over charted games, and say so. Attempts, completions, yards, TDs, interceptions, EPA and targets work in every game.
+   - **Check.** "Completions where parsed yards differ from CFBD yards" should be 0. If it isn't, look at those rows before you trust the totals.
+4. **Analyze the CSV in code.** Leave out rows with `counted = no` (plays wiped out by a penalty). Sacks are already excluded. Useful cuts: depth bands (at or behind the line, 1–9, 10–19, 20+ air yards) with completion %, yards per attempt and YAC per catch; aDOT (mean air yards per attempt); YAC share of passing yards; and per receiver targets, catches, aDOT, YAC per catch and EPA per target.
+5. **Caveats to mention:** spots are charted by the official scorer, so single plays are close to a yard, not exact; season totals are solid. In uncharted games many incompletions name no target, so catch rates per receiver look high there. Names are shortened to "F.Last", and the same player can still show up two ways (accents, garbled characters in CFBD's text, or "II"/"III"); merge obvious duplicates before you rank receivers.
+
+## 6. Fallback: no desktop extension (Claude on the web only)
 
 Use this only when the user can't install the extension. Tell them plainly that in this mode the key is visible to Claude in the chat, and that the extension is the way to avoid that.
 - The user must allow `api.collegefootballdata.com` under Settings > Capabilities > Additional allowed domains, then start a new chat. If the script prints `NETWORK_BLOCKED`, that setting is missing.

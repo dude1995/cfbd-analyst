@@ -2,7 +2,7 @@
   "manifest_version": "0.3",
   "name": "cfbd-data",
   "display_name": "CFBD Data",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Lets Claude pull CollegeFootballData.com stats with your own API key, stored securely by Claude Desktop.",
   "long_description": "Pairs with the CFBD Analyst skill. Your CollegeFootballData.com API key is entered once here and kept in your operating system's secure storage; Claude never sees it. Requests run from your computer and results are saved in your CFBD data folder so later chats reuse them instead of spending API calls.",
   "author": { "name": "dude1995", "url": "https://github.com/dude1995" },

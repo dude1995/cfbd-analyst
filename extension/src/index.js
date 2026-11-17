@@ -16,7 +16,7 @@ import path from "node:path";
 import os from "node:os";
 import crypto from "node:crypto";
 
-const VERSION = "1.1.0";
+const VERSION = "1.2.0";
 const API_HOST = "https://api.collegefootballdata.com";
 // Test hook: only a localhost http URL may replace the real host, so the key can
 // never be pointed at another internet host.

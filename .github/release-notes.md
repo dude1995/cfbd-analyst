@@ -1,6 +1,8 @@
 **CFBD Analyst**: ask Claude anything about college football, using data from CollegeFootballData.com and your own free API key.
 
-**New in this version:** your API key now lives in the **CFBD Data** desktop extension. You enter it once, it's stored in your computer's secure storage, and Claude never sees it. You also no longer need to change Claude's network settings.
+**New in this version:** passing detail. Ask about air yards, yards after catch, depth of target, deep shots or targets by receiver, and Claude now pulls the play-by-play and charts every pass, using the catch spots in CFBD's play descriptions. CFBD only has those spots for recent games (for many teams, from late 2025 on), and Claude tells you which games are covered.
+
+From 1.1.0: your API key lives in the **CFBD Data** desktop extension, stored in your computer's secure storage, where Claude never sees it.
 
 **Install (Claude Desktop):**
 1. Get a free key at https://collegefootballdata.com/key

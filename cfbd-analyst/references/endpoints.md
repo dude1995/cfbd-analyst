@@ -37,7 +37,7 @@ Common parameters: `year`, `week`, `seasonType` (`regular` | `postseason` | `bot
 | | `/stats/game/advanced` | year, week, team | |
 | | `/stats/player/season` | year, team, category | |
 | | `/stats/categories` | | |
-| Play-by-play | `/plays` | year, week (req), team | Expensive: one call per week and team |
+| Play-by-play | `/plays` | year, week (req), seasonType, offense/defense/team | Expensive: one call per week. No air-yards/YAC fields; run `scripts/parse_passes.py` on the saved files (SKILL.md section 5) |
 | | `/drives` | year, team, week | |
 | | `/plays/types`, `/plays/stats` | | |
 | Draft | `/draft/picks` | year, college | NFL draft picks |

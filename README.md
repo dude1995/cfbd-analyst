@@ -42,6 +42,7 @@ Claude confirms your key works (without seeing it) and shows how many API calls 
 - "Compare Texas and Oklahoma recruiting rankings over the last 5 years."
 - "Show a dashboard of my team's week-by-week success rate this season."
 - "How did teams with top-10 preseason AP rankings finish, 2015 to 2024?"
+- "Break down my QB's passing by air yards and yards after catch, and show his targets by receiver."
 
 ### 6. Make it yours (optional)
 Tell Claude your team:
@@ -59,7 +60,7 @@ The logo is the image CFBD links to for that school, shown on your own dashboard
 CFBD/
 ├── profile.json       ← your favorite team, colors, and logo link (optional)
 ├── raw/               ← every API response, as JSON (+ CSV when requested)
-├── derived/           ← tables Claude built for your questions
+├── derived/           ← tables Claude built for your questions (e.g. one row per pass with air yards and YAC)
 └── _calls.log         ← how many API calls you've used
 ```
 
